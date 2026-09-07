@@ -1,0 +1,65 @@
+@model ExcellentTaste.Web.ViewModels.BestellingenViewModel
+
+@{
+    ViewData["Title"] = "Restaurant Excellent Taste";
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.ApiFout))
+{
+    <script>
+        alert(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ApiFout)));
+    </script>
+}
+
+<div class="row bestelling-page">
+    <div class="col-xs-6">
+        <table>
+            <thead>
+                <tr>
+                    <th>Bestelling voor tafel @Model.Tafelnummer</th>
+                    <th colspan="4" class="text-right">
+                        <a asp-controller="Reserveringen" asp-action="Index" class="btn btn-default legacy-back-button">Terug</a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bestelling in Model.Bestellingen)
+                {
+                    <tr>
+                        <td>@bestelling.MenuItemNaam</td>
+                        <td>@bestelling.Aantal</td>
+                        <td>
+                            <a asp-action="PlusItem" asp-route-reservering="@Model.ReserveringId" asp-route-menuitemcode="@bestelling.MenuItemCode" class="legacy-icon-link icon-plus-circle" aria-label="Aantal verhogen"></a>
+                        </td>
+                        <td>
+                            <a asp-action="MinItem" asp-route-reservering="@Model.ReserveringId" asp-route-menuitemcode="@bestelling.MenuItemCode" class="legacy-icon-link icon-minus-circle" aria-label="Aantal verlagen"></a>
+                        </td>
+                        <td>
+                            <a asp-action="DeleteItem" asp-route-reservering="@Model.ReserveringId" asp-route-menuitemcode="@bestelling.MenuItemCode" class="legacy-icon-link icon-delete" aria-label="Bestelregel verwijderen"></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <br />
+        <a asp-controller="Bon" asp-action="Index" asp-route-reservering="@Model.ReserveringId" class="btn btn-default" target="_blank">Print bon voor klant</a>
+    </div>
+    <div class="col-xs-6">
+        @foreach (var gerecht in Model.Gerechten)
+        {
+            <div class="row">
+                <h3>@gerecht.GerechtNaam</h3>
+                @foreach (var subgerecht in Model.Subgerechten.Where(subgerecht => subgerecht.GerechtCode == gerecht.GerechtCode))
+                {
+                    <div class="col-xs-2">
+                        <h5>@subgerecht.SubgerechtNaam</h5>
+                        @foreach (var menuItem in Model.MenuItems.Where(menuItem => menuItem.SubgerechtCode == subgerecht.SubgerechtCode))
+                        {
+                            <a asp-action="Add" asp-route-reservering="@Model.ReserveringId" asp-route-item="@menuItem.MenuItemCode">@menuItem.MenuItemNaam</a><br />
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

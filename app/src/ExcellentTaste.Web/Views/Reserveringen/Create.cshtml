@@ -1,0 +1,9 @@
+@model ExcellentTaste.Web.ViewModels.ReserveringFormViewModel
+
+@{
+    ViewData["Title"] = "Restaurant Excellent Taste";
+}
+
+<form asp-action="Create" method="post" role="form" class="form-horizontal reservering-form">
+    @await Html.PartialAsync("_Form", Model)
+</form>

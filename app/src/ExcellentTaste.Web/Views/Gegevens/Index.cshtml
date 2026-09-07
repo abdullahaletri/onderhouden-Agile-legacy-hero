@@ -1,0 +1,51 @@
+@model ExcellentTaste.Web.ViewModels.GegevensIndexViewModel
+
+@{
+    ViewData["Title"] = "Restaurant Excellent Taste";
+    var headers = Model.Soort switch
+    {
+        "drinken" or "eten" => new[] { "Code", "Omschrijving", "Prijs", "Valt onder" },
+        "klanten" => new[] { "Naam", "Telefoon", "Email" },
+        "gerechten" => new[] { "Code", "Omschrijving" },
+        "subgerechten" => new[] { "Code", "Omschrijving", "Valt onder" },
+        _ => Array.Empty<string>()
+    };
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.ApiFout))
+{
+    <script>
+        alert(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ApiFout)));
+    </script>
+}
+
+<table>
+    <thead>
+        <tr>
+            @foreach (var header in headers)
+            {
+                <th>@header</th>
+            }
+            <th colspan="2" class="text-center">
+                <a asp-action="Create" asp-route-soort="@Model.Soort" class="legacy-icon-link icon-add" aria-label="Nieuwe gegevens"></a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in Model.Rows)
+        {
+            <tr>
+                @foreach (var value in row.Values)
+                {
+                    <td>@value</td>
+                }
+                <td>
+                    <a asp-action="Edit" asp-route-soort="@Model.Soort" asp-route-key="@row.Key" class="legacy-icon-link icon-edit" aria-label="Gegevens wijzigen"></a>
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-soort="@Model.Soort" asp-route-key="@row.Key" class="legacy-icon-link icon-delete" aria-label="Gegevens verwijderen"></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

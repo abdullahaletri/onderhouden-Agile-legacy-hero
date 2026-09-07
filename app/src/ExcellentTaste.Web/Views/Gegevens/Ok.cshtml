@@ -1,0 +1,16 @@
+@model ExcellentTaste.Web.ViewModels.GegevensOkViewModel
+
+@{
+    ViewData["Title"] = "Restaurant Excellent Taste";
+}
+
+<div class="row">
+    <div class="help-block">
+    </div>
+    <div class="centered">
+        <label for="okdialog_id">@Model.Tekst</label>
+        <div class="help-block">
+        </div>
+        <a asp-action="Index" asp-route-soort="@Model.Soort" id="okdialog_id" class="btn btn-primary">Ok</a>
+    </div>
+</div>

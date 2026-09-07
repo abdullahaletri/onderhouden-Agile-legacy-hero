@@ -1,0 +1,69 @@
+@model ExcellentTaste.Web.ViewModels.GegevensFormViewModel
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input asp-for="Soort" type="hidden" />
+<input asp-for="Key" type="hidden" />
+
+@if (Model.Soort == "klanten")
+{
+    <div class="form-group">
+        <label for="Naam">Naam</label>
+        <input asp-for="Naam" class="form-control" />
+        <span asp-validation-for="Naam" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Telefoon">Telefoon</label>
+        <input asp-for="Telefoon" class="form-control" type="tel" />
+        <span asp-validation-for="Telefoon" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input asp-for="Email" class="form-control" type="email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+}
+else
+{
+    <div class="form-group">
+        <label for="Code">Code</label>
+        <input asp-for="Code" class="form-control" readonly="@(string.IsNullOrWhiteSpace(Model.Key) ? null : "readonly")" />
+        <span asp-validation-for="Code" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Omschrijving">Omschrijving</label>
+        <input asp-for="Omschrijving" class="form-control" />
+        <span asp-validation-for="Omschrijving" class="text-danger"></span>
+    </div>
+}
+
+@if (Model.Soort is "drinken" or "eten")
+{
+    <div class="form-group">
+        <label for="Prijs">Prijs</label>
+        <input asp-for="Prijs" class="form-control" />
+        <span asp-validation-for="Prijs" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="ValtOnder">Valt onder</label>
+        <select asp-for="ValtOnder" asp-items="Model.ValtOnderOpties" class="form-control"></select>
+        <span asp-validation-for="ValtOnder" class="text-danger"></span>
+    </div>
+}
+
+@if (Model.Soort == "subgerechten")
+{
+    <div class="form-group">
+        <label for="ValtOnder">Valt onder</label>
+        <select asp-for="ValtOnder" asp-items="Model.ValtOnderOpties" class="form-control"></select>
+        <span asp-validation-for="ValtOnder" class="text-danger"></span>
+    </div>
+}
+
+<div class="row">
+    <div class="help-block">
+    </div>
+    <div class="centered">
+        <button type="submit" class="btn btn-primary">Bewaren</button>
+        <a asp-action="Index" asp-route-soort="@Model.Soort" class="btn btn-default">Annuleren</a>
+    </div>
+</div>

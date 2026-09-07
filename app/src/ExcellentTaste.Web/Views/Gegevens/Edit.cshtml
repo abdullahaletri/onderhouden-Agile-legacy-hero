@@ -1,0 +1,13 @@
+@model ExcellentTaste.Web.ViewModels.GegevensFormViewModel
+
+@{
+    ViewData["Title"] = "Restaurant Excellent Taste";
+}
+
+<form asp-action="Edit" method="post" role="form" class="form-horizontal">
+    @await Html.PartialAsync("_Form", Model)
+</form>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

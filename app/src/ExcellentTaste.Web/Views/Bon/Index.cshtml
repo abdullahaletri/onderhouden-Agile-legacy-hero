@@ -1,0 +1,48 @@
+@model List<ExcellentTaste.Core.Models.BonRegel>
+
+@{
+    // Print lege pagina om inkt te besparen tijdens debuggen, voor oplevering weer verwijderen!!1
+    Layout = null;
+    ViewData["Title"] = "Restaurant Excellent Taste";
+    var totaal = Model.Sum(regel => regel.Totaal);
+}
+
+@if (ViewBag.ApiFout is string apiFout)
+{
+    <script>
+        alert(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(apiFout)));
+    </script>
+}
+
+<center>
+    <button class="btn btn-primary" onclick="window.print()">
+        Print bon
+    </button>
+</center>
+<div id="bon_overzicht">
+    <table id="bon">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Aantal</th>
+                <th>Prijs p/s</th>
+                <th>Totaal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var regel in Model)
+            {
+                <tr>
+                    <td>@regel.MenuItemNaam</td>
+                    <td>@regel.Aantal</td>
+                    <td>&euro;&nbsp;@regel.Prijs.ToString("N2", new System.Globalization.CultureInfo("nl-NL"))</td>
+                    <td>&euro;&nbsp;@regel.Totaal.ToString("N2", new System.Globalization.CultureInfo("nl-NL"))</td>
+                </tr>
+            }
+            <tr class="trBold">
+                <td>TOTAALPRIJS</td>
+                <td colspan="3">&euro;&nbsp;@totaal.ToString("N2", new System.Globalization.CultureInfo("nl-NL"))</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

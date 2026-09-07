@@ -1,0 +1,56 @@
+@model List<ExcellentTaste.Core.Models.Reservering>
+
+@{
+    ViewData["Title"] = "Restaurant Excellent Taste";
+    var vandaag = DateOnly.FromDateTime(DateTime.Today);
+}
+
+@if (ViewBag.ApiFout is string apiFout)
+{
+    <script>
+        alert(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(apiFout)));
+    </script>
+}
+
+<table>
+    <thead>
+        <tr>
+            <th colspan="1000">
+                <p class="text-center">| rood = verleden | groen = vandaag | oranje = toekomst |</p>
+            </th>
+        </tr>
+        <tr>
+            <th>Datum</th>
+            <th>Tijd</th>
+            <th>Tafel</th>
+            <th>Klant</th>
+            <th>Aantal</th>
+            <th></th>
+            <th colspan="2" class="text-center">
+                <a asp-action="Create" class="legacy-icon-link icon-add" aria-label="Nieuwe reservering"></a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var reservering in Model)
+        {
+            var rowClass = reservering.Datum > vandaag ? "toekomst" : reservering.Datum < vandaag ? "verleden" : "vandaag";
+            <tr class="@rowClass">
+                <td>@reservering.Datum.ToString("dd-MM-yyyy")</td>
+                <td>@reservering.Tijd.ToString("HH:mm")</td>
+                <td>@reservering.Tafel</td>
+                <td>@reservering.KlantNaam</td>
+                <td>@reservering.Aantal</td>
+                <td>
+                    <a href="/Bestellingen?reservering=@reservering.ReserveringId&amp;tafelnummer=@reservering.Tafel" class="btn btn-default">Bestelling</a>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@reservering.ReserveringId" class="legacy-icon-link icon-edit" aria-label="Reservering wijzigen"></a>
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@reservering.ReserveringId" class="legacy-icon-link icon-delete" aria-label="Reservering verwijderen"></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

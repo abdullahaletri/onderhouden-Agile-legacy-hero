@@ -1,0 +1,58 @@
+@model ExcellentTaste.Web.ViewModels.ReserveringFormViewModel
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input asp-for="ReserveringId" type="hidden" />
+
+<div class="form-group">
+    <label asp-for="KlantId"></label>
+    <select asp-for="KlantId" asp-items="Model.Klanten" class="form-control"></select>
+    <span asp-validation-for="KlantId" class="text-danger"></span>
+</div>
+
+<div class="new-customer-fields">
+    <label>Nieuwe klant:</label>
+    <div class="form-group">
+        <label asp-for="KlantNaam"></label>
+        <input asp-for="KlantNaam" class="form-control" />
+        <span asp-validation-for="KlantNaam" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" type="email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Telefoon"></label>
+        <input asp-for="Telefoon" class="form-control" />
+        <span asp-validation-for="Telefoon" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label asp-for="Datum"></label>
+    <input asp-for="Datum" class="form-control" placeholder="15-02-2017" />
+    <span asp-validation-for="Datum" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Tijd"></label>
+    <input asp-for="Tijd" class="form-control" placeholder="18:30" type="text" />
+    <span asp-validation-for="Tijd" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Tafel"></label>
+    <input asp-for="Tafel" class="form-control" min="1" max="10" type="number" />
+    <span asp-validation-for="Tafel" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Aantal"></label>
+    <input asp-for="Aantal" class="form-control" />
+    <span asp-validation-for="Aantal" class="text-danger"></span>
+</div>
+
+<div class="centered">
+    <button type="submit" class="btn btn-primary">Bewaren</button>
+    <a asp-action="Index" class="btn btn-default">Annuleren</a>
+</div>

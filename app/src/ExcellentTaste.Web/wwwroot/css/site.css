@@ -1,0 +1,253 @@
+/* Default */
+body {
+    font-family: sans-serif;
+    font-size: 14px;
+}
+
+h5 {
+    color: #7a7676;
+    font-size: 120%;
+    font-weight: bold;
+}
+
+.row {
+    margin-left: 30px;
+}
+
+a,
+a:visited {
+    color: black;
+    text-decoration: none;
+}
+
+nav,
+content,
+footer {
+    margin: 10px 30px 10px 30px;
+}
+
+p {
+    line-height: 130%;
+}
+
+table td input {
+    width: 100%;
+}
+
+tr,
+th,
+td {
+    border: 1px solid silver;
+}
+
+th,
+td {
+    padding: 6px;
+    text-align: left;
+}
+
+th {
+    font-size: 110%;
+    font-weight: bold;
+}
+
+td.td_tafel a {
+    border: 2px dotted;
+    display: block;
+    font-size: 130%;
+    text-align: center;
+    width: 100%;
+}
+
+td.td_tafel {
+    background: white;
+}
+
+tr.toekomst {
+    background: #fde0a5;
+}
+
+tr.vandaag {
+    background: #e9ffe5;
+}
+
+tr.verleden {
+    background: #fdbfbf;
+}
+
+/* Navigation MainMenu */
+.nobullet {
+    list-style-type: none;
+}
+
+.navbar-default {
+    background-color: #f8f8f8;
+    border: 1px solid #e7e7e7;
+    border-radius: 4px;
+}
+
+.legacy-page {
+    display: block;
+    min-height: 20px;
+    padding: 0;
+}
+
+.legacy-page > .container-fluid {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.legacy-menu {
+    min-height: 50px;
+}
+
+.legacy-menu .dropdown-menu {
+    border-radius: 4px;
+    font-size: 14px;
+    margin-top: 0;
+}
+
+.btn-default {
+    background-color: #fff;
+    border-color: #ccc;
+    color: #333;
+}
+
+.btn-default:hover,
+.btn-default:focus {
+    background-color: #e6e6e6;
+    border-color: #adadad;
+    color: #333;
+}
+
+.legacy-icon-link {
+    color: black;
+    display: inline-block;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    min-width: 16px;
+    text-align: center;
+}
+
+.icon-add::before {
+    content: "+";
+    font-weight: bold;
+}
+
+.icon-edit::before {
+    content: "\270E";
+}
+
+.icon-delete::before {
+    content: "\00D7";
+    font-size: 20px;
+    line-height: 16px;
+}
+
+.icon-plus-circle::before {
+    content: "\2295";
+}
+
+.icon-minus-circle::before {
+    content: "\2296";
+}
+
+.legacy-back-button::before {
+    content: "\2190  ";
+}
+
+.text-right {
+    text-align: right;
+}
+
+.centered {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.form-horizontal {
+    max-width: 520px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label,
+.new-customer-fields > label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.new-customer-fields {
+    border-left: 1px solid #ddd;
+    margin: 0 0 15px 15px;
+    padding-left: 15px;
+}
+
+.excellent-home ul {
+    padding-left: 40px;
+}
+
+.excellent-home {
+    margin-left: 0;
+}
+
+.excellent-home img {
+    height: auto;
+    max-width: 100%;
+}
+
+.bestelling-page {
+    margin-left: 0;
+}
+
+.bestelling-page h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.overzicht-page {
+    margin-left: 0;
+}
+
+/* Mainphoto */
+#photohome {
+    background: url("../images/Restaurant.jpg") no-repeat center center;
+    height: 400px;
+}
+
+/* BON */
+#bon_overzicht {
+    margin: 10px auto;
+    text-align: center;
+    width: 400px;
+}
+
+#bon_overzicht table tbody tr td {
+    text-align: right;
+}
+
+.trBold {
+    color: #773131;
+    font-weight: bold;
+}
+
+/* Footer */
+footer {
+    bottom: 0;
+    display: block;
+    padding: 10px;
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
+
+@media (max-width: 575.98px) {
+    .excellent-home > .col-xs-5,
+    .excellent-home > .col-xs-7 {
+        width: 100%;
+    }
+}

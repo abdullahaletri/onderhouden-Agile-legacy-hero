@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <meta name="keywords" content="Restaurant, Excellent taste, reserveren">
+    <meta name="description" content="Excellent taste is een goed restaurant">
+    <meta name="subject" content="Restaurant Excellent taste">
+    <meta name="copyright" content="NewApps">
+    <meta name="language" content="NL">
+    <meta name="robots" content="index,follow">
+    <meta name="author" content="Erik Steens, e.steens@rocgilde.nl">
+    <meta name="designer" content="Erik Steens">
+    <meta name="owner" content="TechnovaWeb">
+    <meta name="pagename" content="TechnovaWeb, Excellent Taste">
+    <meta name="rating" content="General">
+    <meta name="revisit-after" content="7 days">
+    <meta name="target" content="all">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="imagetoolbar" content="no">
+    <meta http-equiv="x-dns-prefetch-control" content="off">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ExcellentTaste.Web.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <nav class="legacy-page navbar navbar-default">
+        <div class="container-fluid">
+            <header>
+                <nav class="navbar navbar-default legacy-menu">
+                    <div class="container-fluid">
+                        <div class="collapse navbar-collapse" id="excellentTasteMenu">
+                            <ul class="nav navbar-nav">
+                                <li>
+                                    <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                </li>
+                                <li>
+                                    <a href="/Reserveringen">Reserveringen</a>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="/Overzichten" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Overzichten <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/Overzichten?overzicht=kok">Voor kok</a></li>
+                                        <li><a href="/Overzichten?overzicht=ober">Voor ober</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="/Gegevens" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gegevens <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/Gegevens?soort=drinken">Drinken</a></li>
+                                        <li><a href="/Gegevens?soort=eten">Eten</a></li>
+                                        <li><a href="/Gegevens?soort=klanten">Klanten</a></li>
+                                        <li><a href="/Gegevens?soort=gerechten">Gerecht hoofdgroepen</a></li>
+                                        <li><a href="/Gegevens?soort=subgerechten">Gerecht subgroepen</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <content>
+                <div class="row">
+                    <div class="col-xs-12">
+                        @RenderBody()
+                    </div>
+                </div>
+            </content>
+            <footer>
+                <hr />
+                <i>TechnovaWeb</i> Ede &copy; 2026
+            </footer>
+        </div>
+    </nav>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
