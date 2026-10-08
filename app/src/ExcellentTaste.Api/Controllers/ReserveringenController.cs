@@ -1,7 +1,8 @@
 using ExcellentTaste.Core.Models;
 using ExcellentTaste.Core.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using ExcellentTaste.Core.Repositories;
 namespace ExcellentTaste.Api.Controllers;
 
 [ApiController]
@@ -37,12 +38,12 @@ public class ReserveringenController : ControllerBase
     public ActionResult<object> Add(Reservering reservering)
     {
         var result = _service.Add(reservering);
+
         if (!result.Gelukt)
         {
             // Legacy issue: dit zou eigenlijk 409 Conflict moeten zijn.
             return Ok(new { result.Gelukt, result.Bericht });
         }
-
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, new { result.Gelukt, result.Bericht, result.Id });
     }
 

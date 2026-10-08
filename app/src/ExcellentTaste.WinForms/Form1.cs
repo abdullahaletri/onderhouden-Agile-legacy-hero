@@ -230,7 +230,7 @@ public class Form1 : Form
         if (reserveringId == null)
         {
             reservering = new Reservering();
-            reservering.Datum = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
+            reservering.Datum = DateOnly.FromDateTime(DateTime.Today);
             reservering.Tijd = new TimeOnly(18, 0);
             reservering.Aantal = 2;
             reservering.Status = 1;

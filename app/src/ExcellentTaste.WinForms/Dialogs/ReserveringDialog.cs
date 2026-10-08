@@ -11,9 +11,14 @@ internal sealed class ReserveringDialog : Form
     private readonly TextBox _nieuweNaam = new TextBox();
     private readonly TextBox _nieuweTelefoon = new TextBox();
     private readonly TextBox _nieuweEmail = new TextBox();
-    private readonly NumericUpDown _tafel = new NumericUpDown { Minimum = 1, Maximum = 999 };
+    private readonly NumericUpDown _tafel = new NumericUpDown { Minimum = 1, Maximum = 999 } ;
     private readonly DateTimePicker _datum = new DateTimePicker { Format = DateTimePickerFormat.Custom, CustomFormat = "dd-MM-yyyy" };
-    private readonly TextBox _tijd = new TextBox();
+    private readonly DateTimePicker _tijd = new DateTimePicker
+    {
+        Format = DateTimePickerFormat.Custom,
+        CustomFormat = "HH:mm",
+        ShowUpDown = true, 
+    };
     private readonly NumericUpDown _aantal = new NumericUpDown { Minimum = 1, Maximum = 999 };
     private readonly NumericUpDown _kinderen = new NumericUpDown { Minimum = 0, Maximum = 999 };
     private readonly TextBox _opmerkingen = new TextBox();
@@ -66,22 +71,23 @@ internal sealed class ReserveringDialog : Form
         _tafel.Value = Math.Max(_tafel.Minimum, reservering.Tafel);
         if (reservering.Datum == DateOnly.MinValue)
         {
-            _datum.Value = DateTime.Today.AddDays(-1);
+            _datum.Value = DateTime.Today;
         }
         else
         {
             _datum.Value = reservering.Datum.ToDateTime(TimeOnly.MinValue);
         }
-
+ 
         if (reservering.Tijd == TimeOnly.MinValue)
         {
-            _tijd.Text = "18:00";
+            _tijd.Value = DateTime.Today.AddHours(18) ;
         }
         else
         {
-            _tijd.Text = reservering.Tijd.ToString("HH:mm", CultureInfo.InvariantCulture);
+            _tijd.Value = DateTime.Today.Add( reservering.Tijd.ToTimeSpan());
         }
-
+       
+        
         _aantal.Value = Math.Max(_aantal.Minimum, reservering.Aantal);
         _kinderen.Value = Math.Max(_kinderen.Minimum, reservering.AantalKinderen);
         _opmerkingen.Text = "";
@@ -103,7 +109,7 @@ internal sealed class ReserveringDialog : Form
             Height = 96,
             Margin = new Padding(13, 3, 0, 3)
         };
-        panel.Paint += delegate(object? sender, PaintEventArgs e)
+        panel.Paint += delegate (object? sender, PaintEventArgs e)
         {
             using Pen border = new Pen(Color.DimGray);
             e.Graphics.DrawRectangle(border, 0, 0, panel.Width - 1, panel.Height - 1);
@@ -163,7 +169,7 @@ internal sealed class ReserveringDialog : Form
 
     public Reservering ToReservering(int klantId)
     {
-        TimeOnly.TryParseExact(_tijd.Text, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out var tijd);
+        TimeOnly tijd = TimeOnly.FromDateTime(_tijd.Value);
 
         return new Reservering
         {
@@ -184,6 +190,18 @@ internal sealed class ReserveringDialog : Form
         _nieuweNaam.Enabled = enabled;
         _nieuweTelefoon.Enabled = enabled;
         _nieuweEmail.Enabled = enabled;
+    }
+
+    private void InitializeComponent()
+    {
+        SuspendLayout();
+        // 
+        // ReserveringDialog
+        // 
+        ClientSize = new Size(409, 321);
+        Name = "ReserveringDialog";
+        ResumeLayout(false);
+
     }
 
     private void SelectKlant(int klantId)

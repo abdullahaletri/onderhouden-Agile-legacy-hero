@@ -18,12 +18,22 @@ public class ReserveringService
 
     public (bool Gelukt, string Bericht, int Id) Add(Reservering reservering)
     {
+        if (_reserveringen.IsTafelBezet(reservering.Tafel, reservering.Datum, reservering.Tijd))
+        {
+            return (false, "Deze tafel is op dit tijdstip al gereserveerd.", 0);
+        }
+
         var id = _reserveringen.Add(reservering);
         return (true, "Reservering opgeslagen.", id);
     }
 
     public (bool Gelukt, string Bericht) Update(int id, Reservering reservering)
     {
+        if (_reserveringen.IsTafelBezet(reservering.Tafel, reservering.Datum, reservering.Tijd, id))
+        {
+            return (false, "Deze tafel is op dit tijdstip al gereserveerd.");
+        }
+
         _reserveringen.Update(id, reservering);
         return (true, "Reservering opgeslagen.");
     }
