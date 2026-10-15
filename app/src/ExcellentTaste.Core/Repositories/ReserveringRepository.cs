@@ -19,7 +19,7 @@ public class ReserveringRepository : RepositoryBase
         // Legacy issue: geannuleerde reserveringen worden hier nog niet weggefilterd.
         command.CommandText = """
 SELECT r.reservering_id, r.tafel, r.datum, r.tijd, r.klant_id, r.aantal, r.status,
-       r.datum_toegevoegd, r.aantal_k, r.opmerkingen,
+       r.datum_toegevoegd, r.aantal_k, r.opmerkingen, r.betaalwijze, r.totaal_bedrag,
        k.klantnaam, k.telefoon
 FROM reservering r
 LEFT JOIN klant k ON r.klant_id = k.klant_id
@@ -42,7 +42,7 @@ ORDER BY r.datum, r.tijd, r.tafel
         using var command = connection.CreateCommand();
         command.CommandText = """
 SELECT r.reservering_id, r.tafel, r.datum, r.tijd, r.klant_id, r.aantal, r.status,
-       r.datum_toegevoegd, r.aantal_k, r.opmerkingen,
+       r.datum_toegevoegd, r.aantal_k, r.opmerkingen, r.betaalwijze, r.totaal_bedrag,
        k.klantnaam, k.telefoon
 FROM reservering r
 LEFT JOIN klant k ON r.klant_id = k.klant_id
@@ -105,6 +105,21 @@ WHERE reservering_id = @id
         command.ExecuteNonQuery();
     }
 
+    public bool Afrekenen(int id, Betaalwijze betaalwijze, decimal totaalBedrag)
+    {
+        using var connection = _database.OpenConnection();
+        using var command = connection.CreateCommand();
+        command.CommandText = """
+UPDATE reservering
+SET betaalwijze = @betaalwijze, totaal_bedrag = @totaalBedrag
+WHERE reservering_id = @id
+""";
+        Add(command, "@id", id);
+        Add(command, "@betaalwijze", (int)betaalwijze);
+        Add(command, "@totaalBedrag", totaalBedrag);
+        return command.ExecuteNonQuery() > 0;
+    }
+
     public void Delete(int id)
     {
         using var connection = _database.OpenConnection();
@@ -146,7 +161,9 @@ WHERE reservering_id = @id
             AantalKinderen = Int(reader, "aantal_k"),
             Opmerkingen = Text(reader, "opmerkingen"),
             KlantNaam = Text(reader, "klantnaam"),
-            Telefoon = Text(reader, "telefoon")
+            Telefoon = Text(reader, "telefoon"),
+            Betaalwijze = (Betaalwijze?)NullableInt(reader, "betaalwijze"),
+            TotaalBedrag = NullableDecimal(reader, "totaal_bedrag")
         };
     }
 }

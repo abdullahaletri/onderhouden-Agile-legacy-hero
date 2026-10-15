@@ -48,4 +48,18 @@ public class BestellingService
             })
             .ToList();
     }
+
+    public bool Afrekenen(int reserveringId, Betaalwijze betaalwijze)
+    {
+        var reservering = _reserveringen.GetById(reserveringId);
+        if (reservering is null)
+        {
+            return false;
+        }
+
+        var regels = GetByReservering(reserveringId);
+        decimal totaal = regels.Sum(regel => regel.Aantal * regel.Prijs);
+
+        return _reserveringen.Afrekenen(reserveringId, betaalwijze, totaal);
+    }
 }

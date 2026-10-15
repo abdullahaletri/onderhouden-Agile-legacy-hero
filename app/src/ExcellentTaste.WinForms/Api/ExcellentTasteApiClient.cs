@@ -148,6 +148,11 @@ internal sealed class ExcellentTasteApiClient
 
     public List<BonRegel> GetBon(int reserveringId) => Get<List<BonRegel>>($"api/bestellingen/{reserveringId}/bon");
 
+    public void AfrekenenBestelling(int reserveringId, Betaalwijze betaalwijze)
+    {
+        Post($"api/bestellingen/{reserveringId}/afrekenen", new { betaalwijze = (int)betaalwijze });
+    }
+
     private T Get<T>(string path) => Read<T>(Send(HttpMethod.Get, path));
 
     private T? GetOrNull<T>(string path)
