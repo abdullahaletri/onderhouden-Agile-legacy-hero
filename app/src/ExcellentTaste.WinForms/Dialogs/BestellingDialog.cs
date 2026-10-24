@@ -14,6 +14,7 @@ internal sealed class BestellingDialog : Form
     private readonly DataGridView _grid = CreateGrid();
     private readonly TabControl _menuTabs = new TabControl { Dock = DockStyle.Fill };
     private readonly Label _totaal = new Label { AutoSize = true, Font = new Font(SystemFonts.DefaultFont, FontStyle.Bold) };
+    private readonly ComboBox _betaalwijze = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 130 };
 
     public BestellingDialog(ExcellentTasteApiClient api, Reservering reservering)
     {
@@ -47,7 +48,7 @@ internal sealed class BestellingDialog : Form
         left.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
         left.RowStyles.Add(new RowStyle(SizeType.Absolute, 38));
         left.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
-        left.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
+        left.RowStyles.Add(new RowStyle(SizeType.Absolute, 38));
 
         Label titel = new Label
         {
@@ -63,12 +64,35 @@ internal sealed class BestellingDialog : Form
         Button close = CreateButton("Terug");
         toolbar.Controls.AddRange(new Control[] { plus, min, delete, print, close });
         toolbar.Dock = DockStyle.Fill;
-        _totaal.Dock = DockStyle.Fill;
         _grid.Dock = DockStyle.Fill;
+
+        _betaalwijze.DisplayMember = nameof(BetaalOptie.Naam);
+        _betaalwijze.ValueMember = nameof(BetaalOptie.Waarde);
+        _betaalwijze.DataSource = new List<BetaalOptie>
+        {
+            new BetaalOptie("Contant", Betaalwijze.Contant),
+            new BetaalOptie("Pin", Betaalwijze.Pin),
+            new BetaalOptie("Creditcard", Betaalwijze.Creditcard),
+            new BetaalOptie("iDEAL", Betaalwijze.Ideal)
+        };
+        _betaalwijze.SelectedIndex = -1;
+
+        Button afrekenen = CreateButton("Afrekenen", 100);
+        _totaal.Margin = new Padding(3, 8, 20, 0);
+        FlowLayoutPanel afrekenPanel = new FlowLayoutPanel
+        {
+            Dock = DockStyle.Fill,
+            FlowDirection = FlowDirection.LeftToRight,
+            WrapContents = false
+        };
+        afrekenPanel.Controls.Add(_totaal);
+        afrekenPanel.Controls.Add(_betaalwijze);
+        afrekenPanel.Controls.Add(afrekenen);
+
         left.Controls.Add(titel, 0, 0);
         left.Controls.Add(toolbar, 0, 1);
         left.Controls.Add(_grid, 0, 2);
-        left.Controls.Add(_totaal, 0, 3);
+        left.Controls.Add(afrekenPanel, 0, 3);
 
         TableLayoutPanel right = new TableLayoutPanel
         {
@@ -97,6 +121,7 @@ internal sealed class BestellingDialog : Form
         min.Click += delegate { TryRunApiAction(() => ChangeSelected(-1)); };
         delete.Click += delegate { TryRunApiAction(DeleteSelected); };
         print.Click += delegate { TryRunApiAction(PrintBon); };
+        afrekenen.Click += delegate { TryRunApiAction(Afrekenen); };
         close.Click += delegate { Close(); };
 
         RenderMenu();
@@ -284,13 +309,44 @@ internal sealed class BestellingDialog : Form
         LoadBestelling();
     }
 
+    private void Afrekenen()
+    {
+        BetaalOptie? optie = _betaalwijze.SelectedItem as BetaalOptie;
+        if (optie == null)
+        {
+            MessageBox.Show(this, "Kies eerst een betaalwijze.", "Afrekenen", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+
+        decimal totaal = BerekenTotaal();
+        if (totaal <= 0)
+        {
+            MessageBox.Show(this, "Er zijn nog geen bestelregels om af te rekenen.", "Afrekenen", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+
+        DialogResult antwoord = MessageBox.Show(
+            this,
+            $"Afrekenen met {optie.Naam}?\r\n\r\nTotaal: {totaal.ToString("0.00", DutchCulture)}",
+            "Afrekenen",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Question);
+        if (antwoord != DialogResult.Yes)
+        {
+            return;
+        }
+
+        _api.AfrekenenBestelling(_reservering.ReserveringId, optie.Waarde);
+        MessageBox.Show(this, "De betaling is opgeslagen.", "Afrekenen", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
+
     private void PrintBon()
     {
         List<BonRegel> bonRegels = _api.GetBon(_reservering.ReserveringId);
 
         using PrintDocument document = new PrintDocument();
         document.DocumentName = $"Bon tafel {_reservering.Tafel}";
-        document.PrintPage += delegate(object sender, PrintPageEventArgs e)
+        document.PrintPage += delegate (object sender, PrintPageEventArgs e)
         {
             if (e.Graphics != null)
             {
@@ -364,4 +420,6 @@ internal sealed class BestellingDialog : Form
             MessageBox.Show(this, "De API is niet bereikbaar.\r\n\r\nNeem contact op met de administrator.", "API niet bereikbaar", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
+
+    private sealed record BetaalOptie(string Naam, Betaalwijze Waarde);
 }

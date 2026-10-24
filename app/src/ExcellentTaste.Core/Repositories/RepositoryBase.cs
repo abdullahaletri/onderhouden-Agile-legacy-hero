@@ -15,6 +15,28 @@ public abstract class RepositoryBase
 
     protected static decimal Decimal(MySqlDataReader reader, string name) => Convert.ToDecimal(reader[name]);
 
+    protected static int? NullableInt(MySqlDataReader reader, string name)
+    {
+        int ordinal = reader.GetOrdinal(name);
+        if (reader.IsDBNull(ordinal))
+        {
+            return null;
+        }
+
+        return Convert.ToInt32(reader[name]);
+    }
+
+    protected static decimal? NullableDecimal(MySqlDataReader reader, string name)
+    {
+        int ordinal = reader.GetOrdinal(name);
+        if (reader.IsDBNull(ordinal))
+        {
+            return null;
+        }
+
+        return Convert.ToDecimal(reader[name]);
+    }
+
     protected static DateOnly Date(MySqlDataReader reader, string name)
     {
         int ordinal = reader.GetOrdinal(name);
