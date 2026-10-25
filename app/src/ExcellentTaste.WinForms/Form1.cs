@@ -132,6 +132,7 @@ public class Form1 : Form
         _overzichtSoort.SelectedIndex = 0;
         Button refresh = CreateButton("Vernieuwen", 112);
         page.Toolbar.Controls.AddRange(new Control[] { _overzichtSoort, refresh });
+        AddWeekOmzetButton(page.Toolbar);
 
         page.SetContent(_overzichtGrid);
 
@@ -830,6 +831,20 @@ public class Form1 : Form
         }
 
         return null;
+    }
+
+    // Weekoverzicht omzet
+    private void AddWeekOmzetButton(FlowLayoutPanel toolbar)
+    {
+        Button weekOmzet = CreateButton("Weekomzet", 112);
+        weekOmzet.Click += delegate { TryRunApiAction(OpenWeekOmzet); };
+        toolbar.Controls.Add(weekOmzet);
+    }
+
+    private void OpenWeekOmzet()
+    {
+        using WeekOmzetDialog dialog = new WeekOmzetDialog(_api);
+        dialog.ShowDialog(this);
     }
 
 }
