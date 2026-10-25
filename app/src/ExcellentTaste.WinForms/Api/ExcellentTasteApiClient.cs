@@ -153,6 +153,23 @@ internal sealed class ExcellentTasteApiClient
         Post($"api/bestellingen/{reserveringId}/afrekenen", new { betaalwijze = (int)betaalwijze });
     }
 
+    public List<WeekOmzetRegel> GetWeekOmzet(int? jaar = null, int? week = null)
+    {
+        List<string> filters = new List<string>();
+        if (jaar != null)
+        {
+            filters.Add($"jaar={jaar}");
+        }
+
+        if (week != null)
+        {
+            filters.Add($"week={week}");
+        }
+
+        string query = filters.Count == 0 ? "" : "?" + string.Join("&", filters);
+        return Get<List<WeekOmzetRegel>>("api/omzet/week" + query);
+    }
+
     private T Get<T>(string path) => Read<T>(Send(HttpMethod.Get, path));
 
     private T? GetOrNull<T>(string path)
