@@ -14,6 +14,10 @@ builder.Services.AddScoped<OverzichtRepository>();
 builder.Services.AddScoped<ReserveringService>();
 builder.Services.AddScoped<BestellingService>();
 
+// Weekoverzicht omzet
+builder.Services.AddScoped<OmzetRepository>();
+builder.Services.AddScoped<OmzetService>();
+
 var app = builder.Build();
 
 app.Use(async (context, next) =>

@@ -14,4 +14,6 @@ public class Reservering
     public DateTime DatumToegevoegd { get; set; } = DateTime.Now;
     public int AantalKinderen { get; set; }
     public string? Opmerkingen { get; set; }
+    public Betaalwijze? Betaalwijze { get; set; }
+    public decimal? TotaalBedrag { get; set; }
 }
