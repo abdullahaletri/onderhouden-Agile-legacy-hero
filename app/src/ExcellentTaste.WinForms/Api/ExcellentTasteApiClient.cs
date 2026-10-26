@@ -123,7 +123,7 @@ internal sealed class ExcellentTasteApiClient
     }
 
     public List<OverzichtRegel> GetOverzicht(string soort) => Get<List<OverzichtRegel>>($"api/overzichten/{Uri.EscapeDataString(soort)}");
-
+    public DashboardData GetDashboard() => Get<DashboardData>("api/dashboard");
     public List<Bestelling> GetBestellingen(int reserveringId) => Get<List<Bestelling>>($"api/bestellingen/{reserveringId}");
 
     public void AddBestellingItem(int reserveringId, string menuItemCode)
