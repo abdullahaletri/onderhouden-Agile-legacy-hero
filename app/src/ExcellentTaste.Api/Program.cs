@@ -18,6 +18,10 @@ builder.Services.AddScoped<DashboardService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Weekoverzicht omzet
+builder.Services.AddScoped<OmzetRepository>();
+builder.Services.AddScoped<OmzetService>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

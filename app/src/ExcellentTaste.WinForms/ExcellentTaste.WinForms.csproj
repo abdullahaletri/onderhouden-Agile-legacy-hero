@@ -4,12 +4,16 @@
 		<ProjectReference Include="..\ExcellentTaste.Core\ExcellentTaste.Core.csproj" />
 	</ItemGroup>
 
-	<PropertyGroup>
-		<OutputType>WinExe</OutputType>
-		<TargetFramework>net8.0-windows</TargetFramework>
-		<Nullable>enable</Nullable>
-		<UseWindowsForms>true</UseWindowsForms>
-		<ImplicitUsings>enable</ImplicitUsings>
-	</PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="ScottPlot.WinForms" Version="5.0.47" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
 
 </Project>
