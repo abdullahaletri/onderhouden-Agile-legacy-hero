@@ -13,3 +13,11 @@ GET {{baseUrl}}/api/menuitems
 ###
 
 GET {{baseUrl}}/api/bestellingen/1/bon
+
+###
+
+GET {{baseUrl}}/api/omzet/week
+
+###
+
+GET {{baseUrl}}/api/omzet/week?jaar=2017&week=51
