@@ -11,14 +11,24 @@ builder.Services.AddScoped<ReserveringRepository>();
 builder.Services.AddScoped<BestellingRepository>();
 builder.Services.AddScoped<MenuRepository>();
 builder.Services.AddScoped<OverzichtRepository>();
+builder.Services.AddScoped<DashboardRepository>();
 builder.Services.AddScoped<ReserveringService>();
 builder.Services.AddScoped<BestellingService>();
+builder.Services.AddScoped<DashboardService>();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // Weekoverzicht omzet
 builder.Services.AddScoped<OmzetRepository>();
 builder.Services.AddScoped<OmzetService>();
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.Use(async (context, next) =>
 {

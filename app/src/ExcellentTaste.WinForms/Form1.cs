@@ -85,7 +85,14 @@ public class Form1 : Form
                    "Vul eerst een reservering in. Deze kan telefonisch binnenkomen of kan worden ingevoerd als gasten plaatsnemen aan een vrije tafel.\r\n\r\n" +
                    "Daarna kan een bestelling worden opgenomen.",
         };
-        page.Controls.Add(text, 0, 0);
+
+        Button dashboard = new Button { Text = "Dashboard", Width = 140, Height = 36, Location = new Point(0, 200) };
+        dashboard.Click += delegate { TryRunApiAction(OpenDashboard); };
+
+        Panel left = new Panel { Dock = DockStyle.Fill };
+        left.Controls.Add(text);
+        left.Controls.Add(dashboard);
+        page.Controls.Add(left, 0, 0);
 
         PictureBox image = new PictureBox { Dock = DockStyle.Fill, SizeMode = PictureBoxSizeMode.Zoom };
         string? imagePath = FindRestaurantImage();
@@ -336,6 +343,13 @@ public class Form1 : Form
         using BestellingDialog dialog = new BestellingDialog(_api, reservering);
         dialog.ShowDialog(this);
         LoadOverzicht();
+    }
+
+    private void OpenDashboard()
+    {
+        using DashboardDialog dialog = new DashboardDialog(_api);
+        dialog.Laden();
+        dialog.ShowDialog(this);
     }
 
     private void LoadOverzicht()

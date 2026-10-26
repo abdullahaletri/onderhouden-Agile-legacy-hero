@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <ItemGroup>
-    <ProjectReference Include="..\ExcellentTaste.Core\ExcellentTaste.Core.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ExcellentTaste.Core\ExcellentTaste.Core.csproj" />
+	</ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ScottPlot.WinForms" Version="5.0.47" />
