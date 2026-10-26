@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.github",
+    "\\app",
+    "\\app\\src",
+    "\\app\\src\\ExcellentTaste.Api",
+    "\\app\\src\\ExcellentTaste.Core",
+    "\\app\\src\\ExcellentTaste.WinForms"
+  ],
+  "PreviewInSolutionExplorer": false
+}
