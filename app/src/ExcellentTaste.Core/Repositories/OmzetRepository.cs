@@ -16,8 +16,7 @@ public class OmzetRepository : RepositoryBase
     {
         using var connection = _database.OpenConnection();
         using var command = connection.CreateCommand();
-        // YEARWEEK(datum, 3) geeft ISO-jaar en ISO-week samen (bijv. 202453), zodat een week rond de jaarwisseling bij het juiste jaar hoort.
-        // LEFT JOIN: bestelregels met een onbekend menuitem of subgerecht tellen mee als 'Onbekend', zodat de omzet gelijk blijft aan totaal_bedrag.
+
         command.CommandText = """
 SELECT FLOOR(YEARWEEK(r.datum, 3) / 100) AS jaar,
        MOD(YEARWEEK(r.datum, 3), 100) AS week,
@@ -31,14 +30,19 @@ LEFT JOIN gerecht g ON s.gerechtcode = g.gerechtcode
 WHERE r.totaal_bedrag IS NOT NULL
   AND (@jaar IS NULL OR FLOOR(YEARWEEK(r.datum, 3) / 100) = @jaar)
   AND (@week IS NULL OR MOD(YEARWEEK(r.datum, 3), 100) = @week)
-GROUP BY YEARWEEK(r.datum, 3), COALESCE(g.gerechtnaam, 'Onbekend')
+GROUP BY FLOOR(YEARWEEK(r.datum, 3) / 100),
+         MOD(YEARWEEK(r.datum, 3), 100),
+         COALESCE(g.gerechtnaam, 'Onbekend')
 ORDER BY jaar DESC, week DESC, gerecht
 """;
+
         Add(command, "@jaar", jaar);
         Add(command, "@week", week);
+
         using var reader = command.ExecuteReader();
 
         var regels = new List<WeekOmzetRegel>();
+
         while (reader.Read())
         {
             regels.Add(new WeekOmzetRegel
