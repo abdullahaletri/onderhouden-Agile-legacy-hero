@@ -10,4 +10,8 @@
     <ProjectReference Include="..\ExcellentTaste.Core\ExcellentTaste.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.3.0" />
+  </ItemGroup>
+
 </Project>

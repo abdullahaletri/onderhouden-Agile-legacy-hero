@@ -123,7 +123,7 @@ internal sealed class ExcellentTasteApiClient
     }
 
     public List<OverzichtRegel> GetOverzicht(string soort) => Get<List<OverzichtRegel>>($"api/overzichten/{Uri.EscapeDataString(soort)}");
-
+    public DashboardData GetDashboard() => Get<DashboardData>("api/dashboard");
     public List<Bestelling> GetBestellingen(int reserveringId) => Get<List<Bestelling>>($"api/bestellingen/{reserveringId}");
 
     public void AddBestellingItem(int reserveringId, string menuItemCode)
@@ -151,6 +151,23 @@ internal sealed class ExcellentTasteApiClient
     public void AfrekenenBestelling(int reserveringId, Betaalwijze betaalwijze)
     {
         Post($"api/bestellingen/{reserveringId}/afrekenen", new { betaalwijze = (int)betaalwijze });
+    }
+
+    public List<WeekOmzetRegel> GetWeekOmzet(int? jaar = null, int? week = null)
+    {
+        List<string> filters = new List<string>();
+        if (jaar != null)
+        {
+            filters.Add($"jaar={jaar}");
+        }
+
+        if (week != null)
+        {
+            filters.Add($"week={week}");
+        }
+
+        string query = filters.Count == 0 ? "" : "?" + string.Join("&", filters);
+        return Get<List<WeekOmzetRegel>>("api/omzet/week" + query);
     }
 
     private T Get<T>(string path) => Read<T>(Send(HttpMethod.Get, path));
